@@ -1,0 +1,9 @@
+version: '3.8'
+services:
+  web-server:
+    build: .
+    ports:
+      - "8080:5000"
+    volumes:
+      # Монтируем локальный файл ./my_config.txt в контейнер
+      - ./my_config.txt:/data/secret.txt
