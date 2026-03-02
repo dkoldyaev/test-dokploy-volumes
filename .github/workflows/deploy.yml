@@ -16,7 +16,7 @@ jobs:
         run: |
           # Используем curl для отправки секрета в API Dokploy
           curl -X POST "https://dokploy.a.dkoldyaev.com/api/application.saveEnvironment" \
-          -H "Authorization: Bearer ${{ secrets.DOKPLOY_TOKEN }}" \
+          -H "x-api-key: ${{ secrets.DOKPLOY_TOKEN }}" \
           -H "Content-Type: application/json" \
           -d '{
             "applicationId": "${{ secrets.DOKPLOY_APP_ID }}",
@@ -30,7 +30,7 @@ jobs:
         run: |
           # После обновления переменной просим Dokploy пересобрать/перезапустить сервис
           curl -X POST "https://dokploy.a.dkoldyaev.com/api/application.deploy" \
-          -H "Authorization: Bearer ${{ secrets.DOKPLOY_TOKEN }}" \
+          -H "x-api-key: ${{ secrets.DOKPLOY_TOKEN }}" \
           -d '{
             "applicationId": "${{ secrets.DOKPLOY_APP_ID }}",
             "title": "piu-pu",
