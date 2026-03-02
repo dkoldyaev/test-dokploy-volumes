@@ -1,0 +1,31 @@
+name: Deploy to Dokploy
+
+on:
+  push:
+    branches:
+      - main  # Запускаем при пуше в основную ветку
+
+jobs:
+  update-secrets:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Update Environment Variable in Dokploy
+        run: |
+          # Используем curl для отправки секрета в API Dokploy
+          # Замени 'your-dokploy-domain.com' на адрес своего инстанса
+          curl -X POST "https://dokploy.a.dkoldyaev.com/api/applications/${{ secrets.DOKPLOY_APP_ID }}/env" \
+          -H "Authorization: Bearer ${{ secrets.DOKPLOY_TOKEN }}" \
+          -H "Content-Type: application/json" \
+          -d '{
+            "key": "SECRET_TEST",
+            "value": "${{ secrets.TEST }}"
+          }'
+
+      - name: Trigger Redeploy
+        run: |
+          # После обновления переменной просим Dokploy пересобрать/перезапустить сервис
+          curl -X POST "https://dokploy.a.dkoldyaev.com/api/applications/${{ secrets.DOKPLOY_APP_ID }}/deploy" \
+          -H "Authorization: Bearer ${{ secrets.DOKPLOY_TOKEN }}"
