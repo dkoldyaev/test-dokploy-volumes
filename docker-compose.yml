@@ -6,4 +6,7 @@ services:
       - "8080:5000"
     volumes:
       # Монтируем локальный файл ./my_config.txt в контейнер
-      - ./my_config.txt:secret
+      - secret:/data/secret.txt
+
+volumes:
+  secret:
