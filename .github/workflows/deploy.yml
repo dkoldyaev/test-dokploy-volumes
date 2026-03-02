@@ -12,6 +12,13 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Get all projects for debug
+        run: |
+          # Используем curl для отправки секрета в API Dokploy
+          curl -X GET "https://dokploy.a.dkoldyaev.com/api/project.all" \
+          -H "x-api-key: ${{ secrets.DOKPLOY_TOKEN }}" \
+          -H "Content-Type: application/json"
+
       - name: Update Environment Variable in Dokploy
         run: |
           # Используем curl для отправки секрета в API Dokploy
