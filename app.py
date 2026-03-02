@@ -3,7 +3,7 @@ import os
 
 app = Flask(__name__)
 
-FILE_PATH = "/data/secret.txt"
+FILE_PATH = "/data/secrets/secret.txt"
 
 @app.route('/')
 def get_val():
