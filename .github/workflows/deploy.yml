@@ -15,17 +15,24 @@ jobs:
       - name: Update Environment Variable in Dokploy
         run: |
           # Используем curl для отправки секрета в API Dokploy
-          # Замени 'your-dokploy-domain.com' на адрес своего инстанса
-          curl -X POST "https://dokploy.a.dkoldyaev.com/api/applications/${{ secrets.DOKPLOY_APP_ID }}/env" \
+          curl -X POST "https://dokploy.a.dkoldyaev.com/api/application.saveEnvironment" \
           -H "Authorization: Bearer ${{ secrets.DOKPLOY_TOKEN }}" \
           -H "Content-Type: application/json" \
           -d '{
-            "key": "SECRET_TEST",
-            "value": "${{ secrets.TEST }}"
+            "applicationId": "${{ secrets.DOKPLOY_APP_ID }}",
+            "env": "",
+            "buildArgs": "",
+            "buildSecrets": "SECRET_TEST=${{ secrets.TEST }}",
+            "createEnvFile": false
           }'
 
       - name: Trigger Redeploy
         run: |
           # После обновления переменной просим Dokploy пересобрать/перезапустить сервис
-          curl -X POST "https://dokploy.a.dkoldyaev.com/api/applications/${{ secrets.DOKPLOY_APP_ID }}/deploy" \
-          -H "Authorization: Bearer ${{ secrets.DOKPLOY_TOKEN }}"
+          curl -X POST "https://dokploy.a.dkoldyaev.com/api/application.deploy" \
+          -H "Authorization: Bearer ${{ secrets.DOKPLOY_TOKEN }}" \
+          -d '{
+            "applicationId": "${{ secrets.DOKPLOY_APP_ID }}",
+            "title": "piu-pu",
+            "description": "pu-pu"
+          }'
